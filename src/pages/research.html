@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Environmental Ideas</title>
+    <link rel="stylesheet" href="../assets/css/research.css">
+</head>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="mainpage.html" class="logo">EcoFix</a>
+            <div class="nav-links">
+                <a href="mainpage.html" class="active">Home</a>
+                <a href="login_service.html">Service</a>
+                <a href="sucessstory.html">Success Story</a>
+                <a href="magazines.html">Magazine</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Environmental Research & Ideas</h1>
+        <p class="subtitle">Share your insights and contribute to a sustainable future</p>
+    </div>
+
+    <div class="container">
+        <section class="section">
+            <h2 class="section-title">💡 Share Your Environmental Ideas</h2>
+            
+            <div class="success-message" id="successMessage">
+                Your idea has been successfully shared! Thank you for contributing to environmental awareness.
+            </div>
+            
+            <form id="ideaForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your full name">
+                    <div class="error-message" id="nameError">Please enter your name (at least 2 characters)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Your Age</label>
+                    <input type="number" id="age" class="form-control" placeholder="Enter your age" min="13" max="120">
+                    <div class="error-message" id="ageError">Please enter a valid age (13-120)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="idea">Your Environmental Idea or Observation</label>
+                    <textarea id="idea" class="form-control" placeholder="Share your thoughts on environmental changes, sustainable practices, or innovative solutions..."></textarea>
+                    <div class="error-message" id="ideaError">Please share your idea (minimum 10 characters)</div>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">Share Your Idea</button>
+            </form>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">🌎 Community Ideas</h2>
+            
+            <div class="ideas-container" id="ideasContainer">
+                <div class="empty-state" id="emptyState">
+                    <p>No ideas have been shared yet. Be the first to contribute!</p>
+                </div>
+                
+                <!-- Ideas will be dynamically added here -->
+            </div>
+        </section>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EcoFix</h3>
+                    <p>Working together to create a sustainable future for generations to come.</p>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="mainpage.html">Home</a></li>
+                        <li><a href="Partner Organization.html">Partners</a></li>
+                        <li><a href="sucessstory.html">Success Stories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Take Action</h3>
+                    <ul>
+                        <li><a href="https://www.swachhmanch.in/events-list" target="_blank">Volunteer</a></li>
+                        <li><a href="support.html">Donate</a></li>
+                        <li><a href="login_service.html">Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Green Street</li>
+                        <li>Eco City, EC 12345</li>
+                        <li>info@ecofix.org</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 EcoFix. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form elements
+            const ideaForm = document.getElementById('ideaForm');
+            const nameInput = document.getElementById('name');
+            const ageInput = document.getElementById('age');
+            const ideaInput = document.getElementById('idea');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Error messages
+            const nameError = document.getElementById('nameError');
+            const ageError = document.getElementById('ageError');
+            const ideaError = document.getElementById('ideaError');
+            
+            // Ideas container
+            const ideasContainer = document.getElementById('ideasContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Load existing ideas from localStorage
+            loadIdeas();
+            
+            // Form submission
+            ideaForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset error messages
+                hideAllErrors();
+                
+                // Validate inputs
+                let isValid = true;
+                
+                if (!nameInput.value || nameInput.value.trim().length < 2) {
+                    showError(nameError);
+                    isValid = false;
+                }
+                
+                if (!ageInput.value || ageInput.value < 13 || ageInput.value > 120) {
+                    showError(ageError);
+                    isValid = false;
+                }
+                
+                if (!ideaInput.value || ideaInput.value.trim().length < 10) {
+                    showError(ideaError);
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Create new idea object
+                    const newIdea = {
+                        id: Date.now(),
+                        name: nameInput.value.trim(),
+                        age: ageInput.value,
+                        content: ideaInput.value.trim(),
+                        date: new Date().toISOString(),
+                        userId: generateUserId()
+                    };
+                    
+                    // Save idea
+                    saveIdea(newIdea);
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                    
+                    // Reset form
+                    ideaForm.reset();
+                }
+            });
+            
+            // Input validation on change
+            nameInput.addEventListener('input', function() {
+                if (nameInput.value && nameInput.value.trim().length >= 2) {
+                    hideError(nameError);
+                }
+            });
+            
+            ageInput.addEventListener('input', function() {
+                if (ageInput.value && ageInput.value >= 13 && ageInput.value <= 120) {
+                    hideError(ageError);
+                }
+            });
+            
+            ideaInput.addEventListener('input', function() {
+                if (ideaInput.value && ideaInput.value.trim().length >= 10) {
+                    hideError(ideaError);
+                }
+            });
+            
+            // Helper functions
+            function showError(errorElement) {
+                errorElement.style.display = 'block';
+            }
+            
+            function hideError(errorElement) {
+                errorElement.style.display = 'none';
+            }
+            
+            function hideAllErrors() {
+                nameError.style.display = 'none';
+                ageError.style.display = 'none';
+                ideaError.style.display = 'none';
+            }
+            
+            function generateUserId() {
+                // Simple user ID generation for demo purposes
+                // In a real application, you would use authentication
+                let userId = localStorage.getItem('ecofix_user_id');
+                if (!userId) {
+                    userId = 'user_' + Date.now() + Math.floor(Math.random() * 1000);
+                    localStorage.setItem('ecofix_user_id', userId);
+                }
+                return userId;
+            }
+            
+            function saveIdea(idea) {
+                // Get existing ideas
+                let ideas = JSON.parse(localStorage.getItem('ecofix_ideas') || '[]');
+                
+                // Add new idea
+                ideas.push(idea);
+                
+                // Save to localStorage
+                localStorage.setItem('ecofix_ideas', JSON.stringify(ideas));
+                
+                // Update UI
+                loadIdeas();
+            }
+            
+            function loadIdeas() {
+                // Get ideas from localStorage
+                const ideas = JSON.parse(localStorage.getItem('ecofix_ideas') || '[]');
+                
+                // Clear ideas container
+                ideasContainer.innerHTML = '';
+                
+                // Show empty state if no ideas
+                if (ideas.length === 0) {
+                    emptyState.style.display = 'block';
+                    ideasContainer.appendChild(emptyState);
+                    return;
+                }
+                
+                // Hide empty state
+                emptyState.style.display = 'none';
+                
+                // Sort ideas by date (newest first)
+                ideas.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Get current user ID
+                const currentUserId = localStorage.getItem('ecofix_user_id');
+                
+                // Render ideas
+                ideas.forEach(idea => {
+                    const ideaCard = document.createElement('div');
+                    ideaCard.className = 'idea-card';
+                    ideaCard.dataset.id = idea.id;
+                    
+                    const isOwner = idea.userId === currentUserId;
+                    
+                    // Format date
+                    const date = new Date(idea.date);
+                    const formattedDate = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                    
+                    ideaCard.innerHTML = `
+                        <div class="idea-header">
+                            <span class="idea-author">${idea.name} (${idea.age})</span>
+                            <span class="idea-date">${formattedDate}</span>
+                        </div>
+                        <div class="idea-content">${idea.content}</div>
+                        ${isOwner ? `
+                        <div class="idea-actions">
+                            <button class="edit-btn" data-id="${idea.id}">Edit</button>
+                            <button class="delete-btn" data-id="${idea.id}">Delete</button>
+                        </div>
+                        ` : ''}
+                    `;
+                    
+                    ideasContainer.appendChild(ideaCard);
+                });
+                
+                // Add event listeners for edit and delete buttons
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', handleEdit);
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', handleDelete);
+                });
+            }
+            
+            function handleEdit(e) {
+                const ideaId = parseInt(e.target.dataset.id);
+                const ideas = JSON.parse(localStorage.getItem('ecofix_ideas') || '[]');
+                const idea = ideas.find(item => item.id === ideaId);
+                
+                if (idea) {
+                    // Fill form with idea data
+                    nameInput.value = idea.name;
+                    ageInput.value = idea.age;
+                    ideaInput.value = idea.content;
+                    
+                    // Change submit button
+                    submitBtn.textContent = 'Update Your Idea';
+                    
+                    // Add event listener for cancel
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.textContent = 'Cancel';
+                    cancelBtn.className = 'btn';
+                    cancelBtn.style.backgroundColor = '#777';
+                    cancelBtn.style.marginLeft = '10px';
+                    
+                    // Replace submit button with update and cancel buttons
+                    submitBtn.parentNode.insertBefore(cancelBtn, submitBtn.nextSibling);
+                    
+                    // Scroll to form
+                    ideaForm.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Change form submission
+                    const originalSubmit = ideaForm.onsubmit;
+                    ideaForm.onsubmit = function(e) {
+                        e.preventDefault();
+                        
+                        // Validate inputs
+                        let isValid = true;
+                        
+                        if (!nameInput.value || nameInput.value.trim().length < 2) {
+                            showError(nameError);
+                            isValid = false;
+                        }
+                        
+                        if (!ageInput.value || ageInput.value < 13 || ageInput.value > 120) {
+                            showError(ageError);
+                            isValid = false;
+                        }
+                        
+                        if (!ideaInput.value || ideaInput.value.trim().length < 10) {
+                            showError(ideaError);
+                            isValid = false;
+                        }
+                        
+                        if (isValid) {
+                            // Find idea index
+                            const ideaIndex = ideas.findIndex(item => item.id === ideaId);
+                            
+                            // Update idea
+                            ideas[ideaIndex].name = nameInput.value.trim();
+                            ideas[ideaIndex].age = ageInput.value;
+                            ideas[ideaIndex].content = ideaInput.value.trim();
+                            ideas[ideaIndex].updatedAt = new Date().toISOString();
+                            
+                            // Save to localStorage
+                            localStorage.setItem('ecofix_ideas', JSON.stringify(ideas));
+                            
+                            // Reset form
+                            submitBtn.textContent = 'Share Your Idea';
+                            ideaForm.reset();
+                            
+                            // Remove cancel button
+                            cancelBtn.remove();
+                            
+                            // Restore original submit handler
+                            ideaForm.onsubmit = originalSubmit;
+                            
+                            // Show success message
+                            successMessage.textContent = 'Your idea has been successfully updated!';
+                            successMessage.style.display = 'block';
+                            setTimeout(() => {
+                                successMessage.style.display = 'none';
+                                successMessage.textContent = 'Your idea has been successfully shared! Thank you for contributing to environmental awareness.';
+                            }, 3000);
+                            
+                            // Update UI
+                            loadIdeas();
+                        }
+                    };
+                    
+                    // Cancel button handler
+                    cancelBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Reset form
+                        submitBtn.textContent = 'Share Your Idea';
+                        ideaForm.reset();
+                        
+                        // Remove cancel button
+                        cancelBtn.remove();
+                        
+                        // Restore original submit handler
+                        ideaForm.onsubmit = originalSubmit;
+                    });
+                }
+            }
+            
+            function handleDelete(e) {
+                const ideaId = parseInt(e.target.dataset.id);
+                
+                if (confirm('Are you sure you want to delete this idea?')) {
+                    // Get existing ideas
+                    let ideas = JSON.parse(localStorage.getItem('ecofix_ideas') || '[]');
+                    
+                    // Filter out the deleted idea
+                    ideas = ideas.filter(idea => idea.id !== ideaId);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('ecofix_ideas', JSON.stringify(ideas));
+                    
+                    // Update UI
+                    loadIdeas();
+                    
+                    // Show success message
+                    successMessage.textContent = 'Your idea has been deleted.';
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                        successMessage.textContent = 'Your idea has been successfully shared! Thank you for contributing to environmental awareness.';
+                    }, 3000);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

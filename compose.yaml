@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  ecofix-web:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    
+    # Defang platform configuration
+    x-defang-config:
+      memory: 512
+      cpus: 0.5
+      # Make the service publicly accessible
+      public: true

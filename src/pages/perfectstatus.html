@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Status Admin</title>
+    <link rel="stylesheet" href="../assets/css/perfectstatus.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">EcoFix</div>
+            <div class="nav-links">
+                <a href="mainpage.html" class="nav-link">Home</a>
+                <a href="login_service.html" class="nav-link">Service</a>
+                <a href="sucessstory.html" class="nav-link">Success Story</a>
+                <a href="magazines.html" class="nav-link">Magazine</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Complaint Status Administration</h2>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('view')">View Complaints</div>
+            <div class="tab" onclick="switchTab('edit')">Edit Status</div>
+        </div>
+
+        <div id="view-panel">
+            <h3>All Complaint Submissions</h3>
+            <div id="feedback-stats" class="data-count"></div>
+            <div id="feedback-list" class="feedback-list"></div>
+        </div>
+
+        <div id="edit-panel" style="display: none;">
+            <h3>Edit Complaint Status</h3>
+            <div id="edit-list" class="feedback-list"></div>
+
+            <div class="clear-data">
+                <h3>Data Management</h3>
+                <p>Clear all complaint data from the system</p>
+                <button class="btn-danger" onclick="clearAllData()">Clear All Data</button>
+            </div>
+        </div>
+    </div>
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+        <script src="../assets/js/perfectstatus.js"></script>
+
+    </body>
+
+    </html>

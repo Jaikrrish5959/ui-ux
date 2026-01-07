@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/registerfaculty.css">
+</head>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Faculty Registration</h1>
+        </div>
+        <div class="form-container">
+            <div class="input-group">
+                <input type="text" id="name" placeholder="Full Name" required pattern="[A-Za-z]">
+                <i class="fas fa-user input-icon"></i>
+                <div class="error-message" id="nameError"></div>
+            </div>
+            
+            <div class="input-group">
+                <input type="number" id="age" placeholder="Age" min="21" max="65" required>
+                <i class="fas fa-birthday-cake input-icon"></i>
+                <div class="error-message" id="ageError"></div>
+            </div>
+            
+            <div class="input-group">
+                <input type="text" id="qualification" placeholder="Qualification" required>
+                <i class="fas fa-graduation-cap input-icon"></i>
+                <div class="error-message" id="qualificationError"></div>
+            </div>
+            
+            <div class="input-group">
+                <input type="text" id="experience" placeholder="Experience (in years)" required>
+                <i class="fas fa-briefcase input-icon"></i>
+                <div class="error-message" id="experienceError"></div>
+            </div>
+            
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+                <i class="fas fa-envelope input-icon"></i>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="input-group">
+                <input type="tel" id="phone" placeholder="Phone Number" required>
+                <i class="fas fa-phone input-icon"></i>
+                <div class="error-message" id="phoneError"></div>
+            </div>
+            
+            <button class="register-btn" id="registerBtn">
+                <span>Register</span>
+                <div class="loading" id="loading"></div>
+            </button>
+            
+            <div class="login-link">
+                Already registered? <a href="password.html">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i> Registration successful!
+    </div>
+
+    <script src="../assets/js/registerfaculty.js"></script>
+</body>
+</html>

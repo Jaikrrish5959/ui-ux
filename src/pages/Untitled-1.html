@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee7e5;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    form{
+        width: 50%;
+        border-radius: 20px;
+        box-shadow: inset;
+        background-color: white;
+    }
+    h1{
+        background-color:darkgrey;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding:15px;
+    }
+    label{
+        width: 90%;
+        font-size: large; 
+        font-weight: bold;
+        margin-left: 30px;
+        display: flex;
+        align-items: center;
+        padding-bottom: 5px;
+    }
+    input,select{
+        width: 90%;
+        font-size: large; 
+        margin-left: 30px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    select,option{
+        font-weight: lighter;
+    }
+    span{
+        padding-left: 30px;
+        color: red;
+        display: none;
+        padding-bottom: 15px;
+    }
+    .cb{
+        display: flex;
+    }
+    #suggestion{
+        padding-left: 30px;
+        color: grey;
+        padding-bottom: 5px;
+    }
+    input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+
+}
+
+    
+</style>
+<body>
+    <form action="" class="formbox" >
+        <h1>Pokemon Registration form</h1>
+        <label for="">Trainer name</label> 
+        <input type="text" pattern="^[A-Za-z]{3,}$" id="tname" oninput="validateregix(this.value,this.getAttribute('pattern'),this.id)">    
+        <span id="tnameerr">Error: Only Alphabets and min 3 characters is required</span>
+        <label for="">Trainer ID</label>
+        <input type="text" pattern="^TR\d{1,}$" id="tid" oninput="validateregix(this.value,this.getAttribute('pattern'),this.id)">
+        <span id="tiderr">Error: Trainer Id format -> TRXXXX where x is any number </span>
+        <label for="">Age</label>
+        <input type="text" id="age" pattern="^[1-9][0-9]+$" oninput="validateregix(this.value,this.getAttribute('pattern'),this.id)">
+        <span id="ageerr">Error: Required Minimum age 10</span>
+        <label for="">Region</label>
+        <select name="" id="region"  onchange="updatestartedpokemon()" >
+            <option value="" hidden disabled selected >Select an option</option>
+        </select>
+        <label for="">Starter Pokemon</label>  
+        <select name="" id="starterpokemon" >
+            <option value="" hidden disabled selected >Select an option</option>
+        </select>
+
+        <label for="">Pokeball type</label> 
+        <input type="checkbox" name="" id="">Battler
+        <input type="checkbox" name="" id="">Breeder
+        <input type="checkbox" name="" id="">Collector
+        <input type="checkbox" name="" id="">Researcher
+        <input type="checkbox" name="" id="">Coordinator
+
+        <label for="">Favourite Pokemon</label>
+        <span id="suggestion"></span> 
+        <input type="text" oninput="autocomplete()" id="favpokemon">
+
+
+
+
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+           addregions();
+        });
+
+        const pokemons= [
+  "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard",
+  "Squirtle", "Wartortle", "Blastoise", "Caterpie", "Metapod", "Butterfree",
+  "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot",
+  "Rattata", "Raticate", "Spearow", "Fearow", "Ekans", "Arbok",
+  "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina", "Nidoqueen",
+  "Nidoran♂", "Nidorino", "Nidoking", "Clefairy", "Clefable", "Vulpix",
+  "Ninetales", "Jigglypuff", "Wigglytuff", "Zubat", "Golbat", "Oddish",
+  "Gloom", "Vileplume", "Paras", "Parasect", "Venonat", "Venomoth",
+  "Diglett", "Dugtrio", "Meowth", "Persian", "Psyduck", "Golduck",
+  "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag", "Poliwhirl",
+  "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop", "Machoke",
+  "Machamp", "Bellsprout", "Weepinbell", "Victreebel", "Tentacool", "Tentacruel",
+  "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash", "Slowpoke",
+  "Slowbro", "Magnemite", "Magneton", "Farfetch'd", "Doduo", "Dodrio",
+  "Seel", "Dewgong", "Grimer", "Muk", "Shellder", "Cloyster",
+  "Gastly", "Haunter", "Gengar", "Onix", "Drowzee", "Hypno",
+  "Krabby", "Kingler", "Voltorb", "Electrode", "Exeggcute", "Exeggutor",
+  "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing",
+  "Weezing", "Rhyhorn", "Rhydon", "Chansey", "Tangela", "Kangaskhan",
+  "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu", "Starmie",
+  "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar", "Pinsir",
+  "Tauros", "Magikarp", "Gyarados", "Lapras", "Ditto", "Eevee",
+  "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar",
+  "Kabuto", "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos",
+  "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
+];
+
+        const regionsstring="Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea";
+        const kantostring="Bulbasaur, Charmander, Squirtle";
+        const johtostring="Chikorita, Cyndaquil, Totodile";
+        const regions=convertstringtoarray(regionsstring);
+        const kantos=convertstringtoarray(kantostring);
+        const johtos=convertstringtoarray(johtostring);
+    
+        
+        function convertstringtoarray(a )  {
+            return a.split(",").map(a=>a.trim());
+        }
+
+        function addregions(){
+            let dd=document.getElementById("region");
+            regions.forEach(region => {
+                let opt=document.createElement("option");
+                opt.value=region;
+                opt.innerText=region;
+                dd.appendChild(opt);
+            });
+        }
+
+        function validateregix(value,pattern,id){
+            let regix=new RegExp(pattern);
+            let spanid=id+"err";
+            if(!regix.test(value)){
+                document.getElementById(spanid).style.display="inline";
+            }else{
+                document.getElementById(spanid).style.display="none";
+            }
+        }
+
+        function updatestartedpokemon(){
+            const reg=document.getElementById("region").value;
+            const starter=document.getElementById("starterpokemon");
+            starter.innerHTML = '<option value="" hidden disabled selected>Select an option</option>';
+            if(reg=="Kanto"){
+                kantos.forEach(e => {
+                    let opt=document.createElement("option");
+                opt.value=e ;
+                opt.innerText=e;
+                starter.appendChild(opt);
+                });
+            }else{
+                johtos.forEach(e => {
+                    let opt=document.createElement("option");
+                opt.value=e ;
+                opt.innerText=e;
+                starter.appendChild(opt);
+                });
+            }
+
+        }
+        function autocomplete(){
+    let input = document.getElementById("favpokemon").value;
+    input = input.toLowerCase();
+    let displayfav = document.getElementById("suggestion");
+    let match = pokemons.find(p => p.toLowerCase().startsWith(input));
+
+    if(input && match){
+        displayfav.innerHTML = match;
+        displayfav.style.display = "inline"; // show suggestion
+    } else {
+        displayfav.innerHTML = "";
+        displayfav.style.display = "none"; // hide suggestion
+    }
+}
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFix - Post a Complaint</title>
+    <link rel="stylesheet" href="../assets/css/perfectform.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">EcoFix</div>
+            <div class="nav-links">
+                <a href="mainpage.html" class="nav-link">Home</a>
+                <a href="login_service.html" class="nav-link">Service</a>
+                <a href="sucessstory.html" class="nav-link">Success Story</a>
+                <a href="magazines.html" class="nav-link">Magazine</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="header1">
+            <h1>EcoFix</h1>
+            <p>Help us create a cleaner community</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('form')">Submit Complaint</div>
+            <div class="tab" onclick="switchTab('view')">View Complaints</div>
+        </div>
+
+        <!-- Form Section -->
+        <div id="form-section">
+            <h2>Environmental Complaint Form</h2>
+
+            <div class="step active" id="step1">
+                <label for="name" >Full Name (optional*)</label>
+                <input type="text" id="name" placeholder="Enter your name" pattern="[A-Za-z\s]+">
+                <div class="buttons">
+                    <div></div> <!-- Empty div for spacing -->
+                    <button class="btn" onclick="nextStep(1)">Next</button>
+                </div>
+            </div>
+
+            <div class="step" id="step2">
+                <label for="email">Email Address (optional*)</label>
+                <input type="email" id="email" placeholder="Enter your email">
+                <div class="buttons">
+                    <button class="btn" onclick="prevStep(1)">Back</button>
+                    <button class="btn" onclick="nextStep(2)">Next</button>
+                </div>
+            </div>
+
+            <div class="step" id="step3">
+                <label>What issues need attention? (Select all that apply)</label>
+                <div class="tabelcontainer">
+                    <table>
+                        <tr>
+                            <th>Select</th>
+                            <th>Issue Type</th>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Yellow Spot"></td>
+                            <td>Yellow Spot</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Overflow"></td>
+                            <td>Overflow of Debris</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Dustbin Cleaning"></td>
+                            <td>Dustbin Cleaning</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Garbage Dumping"></td>
+                            <td>Garbage Dumping</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Road Problems"></td>
+                            <td>Road Problems</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Open Manholes"></td>
+                            <td>Open Manholes</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Sweeping Not Done"></td>
+                            <td>Sweeping Not Done</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="Infected Water Bodies"></td>
+                            <td>Infected Water Bodies</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="service" value="No Water Supply"></td>
+                            <td>No Water Supply</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="buttons">
+                    <button class="btn" onclick="prevStep(2)">Back</button>
+                    <button class="btn" onclick="nextStep(3)">Next</button>
+                </div>
+            </div>
+
+            <div class="step" id="step4">
+                <label>Location of the Issue</label>
+                <div id="map-container"></div>
+                <div class="coords-display" id="location-coords">Click on map or use buttons below to set location</div>
+                <div class="map-controls">
+                    <button class="location-btn" onclick="getMyLocation()">Get My Location</button>
+                    <button class="location-btn" onclick="resetMap()">Reset Map</button>
+                </div>
+                <div class="buttons">
+                    <button class="btn" onclick="prevStep(3)">Back</button>
+                    <button class="btn" onclick="nextStep(4)">Next</button>
+                </div>
+            </div>
+            
+            <div class="step" id="step5">
+                <label for="location-image">Add a photo of the issue</label>
+                <input type="file" id="location-image" accept="image/*">
+                <div id="image-preview" style="margin-top: 15px;"></div>
+                <div class="buttons">
+                    <button class="btn" onclick="prevStep(4)">Back</button>
+                    <button class="btn" onclick="nextStep(5)">Next</button>
+                </div>
+            </div>
+            
+            <div class="step" id="step6">
+                <label for="comments">Additional Details</label>
+                <textarea id="comments" rows="4" placeholder="Please provide any additional details about the environmental issue"></textarea>
+                <div class="buttons">
+                    <button class="btn" onclick="prevStep(5)">Back</button>
+                    <button class="btn" onclick="submitForm()">Submit</button>
+                </div>
+            </div>
+
+            <div id="success" class="success-message">
+                <h3>Thank you for your complaint submission!</h3>
+                <p>Your report has been recorded successfully. We'll address this issue soon.</p>
+                <button class="btn" onclick="switchTab('view')">View All Complaints</button>
+                <button class="btn" onclick="resetForm()">Submit Another</button>
+            </div>
+        </div>
+
+        <!-- View Feedback Section -->
+        <div id="feedback-view">
+            <h2>Complaint Status</h2>
+            <div id="feedback-list" class="feedback-list"></div>
+        </div>
+    </div>
+    
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+        <script src="../assets/js/perfectform.js"></script>
+    
+    </body>
+    
+    </html>

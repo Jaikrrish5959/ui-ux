@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFix Supporter - Donate</title>
+    <link rel="stylesheet" href="../assets/css/support.css">
+</head>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="mainpage.html" class="logo">EcoFix</a>
+            <div class="nav-links">
+                <a href="mainpage.html" class="active">Home</a>
+                <a href="login_service.html">Service</a>
+                <a href="sucessstory.html">Success Story</a>
+                <a href="magazines.html">Magazine</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="eco-header">
+        <h1>EcoFix Supporters</h1>
+        <p>Leading the way to a sustainable future</p>
+    </div>
+
+    <div class="donation-container">
+        <h2>🌍 EcoFix Supporter</h2>
+        <p>Donate or advocate for green initiatives that help us expand our environmental impact.</p>
+
+        <form class="donation-form" id="donationForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="amount">Donation Amount ($):</label>
+            <input type="number" id="amount" placeholder="Enter amount" required>
+
+            <label for="method">Payment Method:</label>
+            <select id="method" onchange="showPaymentDetails()">
+                <option value="credit_card">Credit Card</option>
+                <option value="paypal">PayPal</option>
+                <option value="upi">UPI</option>
+            </select>
+
+            <!-- Credit Card Section -->
+            <div id="creditCardSection" class="credit-card-section">
+                <h3>Credit Card Details</h3>
+
+                <label for="cardName">Name on Card:</label>
+                <input type="text" id="cardName" placeholder="Enter name as it appears on card" required>
+
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required>
+
+                <div class="card-row">
+                    <div>
+                        <label for="expiryDate">Expiry Date:</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div>
+                        <label for="cvv">CVV:</label>
+                        <input type="password" id="cvv" placeholder="XXX" maxlength="3" required>
+                    </div>
+                </div>
+
+                <label for="billingAddress">Billing Address:</label>
+                <input type="text" id="billingAddress" placeholder="Enter your billing address" required>
+            </div>
+
+            <!-- PayPal Section -->
+            <div id="paypalSection" class="paypal-section">
+                <h3>PayPal Information</h3>
+                <img src="../assets/images/paypal.jpg" alt="PayPal Logo" class="paypal-logo" style="border-radius: 20px;"><br>
+
+                <label for="paypalEmail">PayPal Email:</label>
+                <input type="email" id="paypalEmail" placeholder="Enter your PayPal email" required>
+
+                <p>You will be redirected to PayPal to complete your donation securely.</p>
+
+                <div class="card-row">
+                    <div>
+                        <label for="paypalCountry">Country:</label>
+                        <select id="paypalCountry" required>
+                            <option value="">Select your country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="paypalCurrency">Currency:</label>
+                        <select id="paypalCurrency" required>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="INR">INR (₹)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code Section -->
+            <div id="qrCodeSection" class="qr-code-section">
+                <h3>Scan QR Code to Pay</h3>
+                <img src="../assets/images/fam.jpg" alt="UPI QR Code">
+                <p class="qr-code-caption">Scan with any UPI app to complete your donation</p>
+                <button type="button" id="doneButton" onclick="handleUpiDone()">Done</button>
+            </div>
+
+            <button type="submit" id="donateButton">Donate Now</button>
+        </form>
+    </div>
+
+        <script src="../assets/js/support.js"></script>
+
+    </body>
+
+    </html>
